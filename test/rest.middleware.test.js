@@ -14,6 +14,17 @@ describe('loopback.rest', function() {
       .end(done);
   });
 
+  it('should report 200 for DELETE /:id found', function(done) {
+    app.set('legacyExplorer', false);
+    app.model(MyModel);
+    app.use(loopback.rest());
+    MyModel.create({name: 'm1'}, function(err, inst) {
+      request(app)
+        .del('/mymodels/' + inst.id)
+        .expect(200, done);
+    });
+  });
+
   it('should report 404 for GET /:id not found', function(done) {
     app.model(MyModel);
     app.use(loopback.rest());
